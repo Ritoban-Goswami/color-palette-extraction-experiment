@@ -282,45 +282,48 @@ const quantization = (rgbValues, depth) => {
 };
 
 const main = () => {
-  const imgFile = document.getElementById("imgfile");
+  // const imgFile = document.getElementById("imgfile");
   const image = new Image();
-  const file = imgFile.files[0];
-  const fileReader = new FileReader();
+  // const imageUrl = 'sample-image.jpg';
+  const imageUrl = 'sample-image-2.jpg';
+  // const file = imgFile.files[0];
+  // const fileReader = new FileReader();
 
   // Whenever file & image is loaded procced to extract the information from the image
-  fileReader.onload = () => {
-    image.onload = () => {
-      // Set the canvas size to be the same as of the uploaded image
-      const canvas = document.getElementById("canvas");
-      canvas.width = image.width;
-      canvas.height = image.height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(image, 0, 0);
+  // fileReader.onload = () => {
+  image.onload = () => {
+    // Set the canvas size to be the same as of the uploaded image
+    const canvas = document.getElementById("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(image, 0, 0);
 
-      /**
-       * getImageData returns an array full of RGBA values
-       * each pixel consists of four values: the red value of the colour, the green, the blue and the alpha
-       * (transparency). For array value consistency reasons,
-       * the alpha is not from 0 to 1 like it is in the RGBA of CSS, but from 0 to 255.
-       */
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    /**
+     * getImageData returns an array full of RGBA values
+     * each pixel consists of four values: the red value of the colour, the green, the blue and the alpha
+     * (transparency). For array value consistency reasons,
+     * the alpha is not from 0 to 1 like it is in the RGBA of CSS, but from 0 to 255.
+     */
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      // Convert the image data to RGB values so its much simpler
-      const rgbArray = buildRgb(imageData.data);
+    // Convert the image data to RGB values so its much simpler
+    const rgbArray = buildRgb(imageData.data);
 
-      /**
-       * Color quantization
-       * A process that reduces the number of colors used in an image
-       * while trying to visually maintin the original image as much as possible
-       */
-      const quantColors = quantization(rgbArray, 0);
+    /**
+     * Color quantization
+     * A process that reduces the number of colors used in an image
+     * while trying to visually maintin the original image as much as possible
+     */
+    const quantColors = quantization(rgbArray, 0);
 
-      // Create the HTML structure to show the color palette
-      buildPalette(quantColors);
-    };
-    image.src = fileReader.result;
+    // Create the HTML structure to show the color palette
+    buildPalette(quantColors);
   };
-  fileReader.readAsDataURL(file);
+  // image.src = fileReader.result;
+  image.src = imageUrl;
+  // };
+  // fileReader.readAsDataURL(file);
 };
 
 main();
